@@ -1,0 +1,7 @@
+{
+  "postgres" : "host=hostname user= password= database= port=5432 TimeZone=Asia/Jakarta",
+  "cronInterval" : 5,
+  "redisHost" : "host:6379",
+  "redisPass" : "",
+  "redisDB" : 0
+}
