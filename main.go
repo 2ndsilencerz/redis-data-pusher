@@ -31,7 +31,7 @@ func main() {
 		log.Fatalf(msg)
 	}
 
-	config.PrintToConsole(fmt.Sprintf("starting scheduler with interval %v second(s) asynchronously",
+	config.PrintToConsole(fmt.Sprintf("starting scheduler with interval %v second(s)",
 		durations.Seconds()))
 	s1.StartBlocking()
 }
@@ -56,7 +56,7 @@ func pushToRedis(userSet []model.User) {
 	redisInst := database.InitRedis()
 	config.PrintToConsole(fmt.Sprintf("pushing new dataset %T\n", userSet))
 	for _, v := range userSet {
-		config.LogToFile(fmt.Sprintf("pushing new data %T : %v", v, v))
+		config.LogToFile(fmt.Sprintf("pushing new data %T : %v", v, v.Nama))
 		jsonUser, err := json.Marshal(v)
 		if err != nil {
 			config.LogToFile(fmt.Sprintf("Error: %v", err))
