@@ -20,6 +20,8 @@ func InitDB() *gorm.DB {
 	return db
 }
 
+// CloseDB need to be called each time a db instance are used/called
+// so the connection will close and will not use more memory
 func CloseDB(db *gorm.DB) {
 	sqlDB, err := db.DB()
 	if err != nil {
