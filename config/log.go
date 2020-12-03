@@ -4,29 +4,35 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"time"
 )
 
 func loadFile() *os.File {
-	file, err := os.OpenFile("logs/log", os.O_RDWR, 0777)
+	file, err := os.OpenFile("logs/log", os.O_RDWR|os.O_CREATE|os.O_APPEND, 0777)
 	if err != nil {
-		file, err = os.Create("logs/log")
-		if err != nil {
-			panic(fmt.Errorf("Error: %v\n", err))
-		}
+		//file, err = os.Create("logs/log")
+		//if err != nil {
+		panic(fmt.Errorf("Error: %v\n", err))
+		//}
 	}
 	return file
 }
 
+// LogToFile used to log into file which located in logs/log
 func LogToFile(content string) {
 	file := loadFile()
-	currentTime := time.Now().Format("2006/01/02 15:04:05 Z07")
-	content = fmt.Sprintln(currentTime, content)
+	//writer := io.MultiWriter(os.Stdout, file)
 	log.SetOutput(file)
-	log.Println(content)
+	log.Print(content)
+	content = fmt.Sprintln(InstantTimeString(), content)
+	fmt.Print(content)
 
 	err := file.Close()
 	if err != nil {
 		fmt.Printf("Error: %v\n", err)
 	}
+}
+
+// PrintToConsole use timestamp as prefix
+func PrintToConsole(content string) {
+	fmt.Printf("%v %v\n", InstantTimeString(), content)
 }
