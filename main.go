@@ -14,7 +14,6 @@ import (
 )
 
 var ctx = context.Background()
-var db = database.InitDB()
 
 func main() {
 	interval := config.GetCronInterval()
@@ -39,12 +38,10 @@ func main() {
 
 func loadData() {
 	config.PrintToConsole("reading database")
-	//db = database.InitDB()
+	db := database.InitDB()
 	var userSet []model.User
-	if db == nil {
-		return
-	}
 	db.Where("redis_push = true").Find(&userSet)
+	database.CloseDB(db)
 
 	if len(userSet) > 0 {
 		pushToRedis(userSet)
@@ -54,6 +51,8 @@ func loadData() {
 }
 
 func pushToRedis(userSet []model.User) {
+	db := database.InitDB()
+	defer database.CloseDB(db)
 	redisInst := database.InitRedis()
 	config.PrintToConsole(fmt.Sprintf("pushing new dataset %T\n", userSet))
 	for _, v := range userSet {

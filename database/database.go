@@ -19,3 +19,14 @@ func InitDB() *gorm.DB {
 	}
 	return db
 }
+
+func CloseDB(db *gorm.DB) {
+	sqlDB, err := db.DB()
+	if err != nil {
+		config.LogToFile(fmt.Sprintf("Error: %v", err))
+	}
+	err = sqlDB.Close()
+	if err != nil {
+		config.LogToFile(fmt.Sprintf("Error: %v", err))
+	}
+}
